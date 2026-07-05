@@ -9,21 +9,25 @@
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
-        unordered_map<ListNode*, int> mp;
-        ListNode* temp = head;
-        while(temp!=nullptr){
-            if(mp.find(temp)==mp.end()){
-                mp[temp] = 1;
-            }
-            else{
-                return temp;
-            }
-            temp = temp->next; 
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast!=nullptr && fast->next!=nullptr){
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow==fast){
+                slow = head;
+                while(slow!=fast){
+                    slow = slow->next;
+                    fast = fast->next;
+                }
+                return slow;
+            } 
         }
         return nullptr;
     }
 };
 /*
+Approach : Floyd's Tortoise and Hare algorithm
 Time complexity : O(n)
-Space complexity : O(n)
+Space complexity : O(1)
 */
